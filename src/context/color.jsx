@@ -1,26 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
-const ColorContext = createContext({
-  state: { color: "black", subcolor: "red" },
-  actions: { setColor: () => {}, setSubColor: () => {} },
-});
+const ColorContext = createContext();
 
-const ColorProvider = ({ children }) => {
+export const ColorProvider = ({ children }) => {
   const [color, setColor] = useState("black");
   const [subcolor, setSubColor] = useState("red");
 
-  const value = {
-    state: { color, subcolor },
-    actions: { setColor, setSubColor },
-  };
-
   return (
-    <ColorContext.Provider value={value}>{children}</ColorContext.Provider>
+    <ColorContext.Provider value={{ color, subcolor, setColor, setSubColor }}>
+      {children}
+    </ColorContext.Provider>
   );
 };
 
-const { Consumer: ColorConsumer } = ColorContext;
-
-export { ColorProvider, ColorConsumer };
+export const useColor = () => useContext(ColorContext);
 
 export default ColorContext;
